@@ -1,0 +1,18 @@
+[package]
+name = "waveform_space"
+version = "0.1.0"
+authors = ["Joseph Mark <sjeohp@gmail.com>"]
+license = "MIT"
+description = "compute distance between waveforms in feature space"
+repository = "https://github.com/sjeohp/rust-collisions.git"
+keywords = ["collision", "collisions", "detection", "2d"]
+
+[dependencies]
+rustfft = "*"
+num = "*"
+stream-dct = "*"
+rand = "*"
+
+[lib]
+name = "collisions"
+path = "src/lib.rs"
