@@ -8,10 +8,10 @@ repository = "https://github.com/sjeohp/waveform_space.git"
 keywords = ["waveform", "mfcc", "audio", "analysis"]
 
 [dependencies]
-rustfft = "*"
-num = "*"
-stream-dct = "*"
-rand = "*"
+rustfft = "1.0.1"
+num = "0.1.37"
+stream-dct = "0.1.0"
+rand = "0.3.15"
 
 [lib]
 name = "waveform_space"
