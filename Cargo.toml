@@ -1,6 +1,6 @@
 [package]
 name = "waveform_space"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Joseph Mark <sjeohp@gmail.com>"]
 license = "MIT"
 description = "compute distance between waveforms in feature space"

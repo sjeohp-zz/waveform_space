@@ -24,7 +24,7 @@ pub fn framed_mfcc(samples: &[f32], sample_rate: f32) -> Vec<Vec<f32>>
 	a
 }
 
-pub fn distance_to_framed_mfcc(samples_a: &[f32], framed: Vec<Vec<f32>>, sample_rate: f32) -> f32
+pub fn distance_to_framed_mfcc(samples_a: &[f32], framed: &Vec<Vec<f32>>, sample_rate: f32) -> f32
 {
 	let frames_a = frames(samples_a, sample_rate);
 	assert!(frames_a.len() == framed.len());
@@ -174,31 +174,34 @@ mod unit_tests {
 	#[test]
 	fn test_wave_comparison()
 	{
+		let samplerate = 16000.0;
+
+		let mut rng_a = thread_rng();
+		let rng_factor_a = 0.0;
+
+		let wave_a: Vec<f32> = (0u64..samplerate as u64).map(move |t| t as f32 * 440.0 * 2.0*f32::consts::PI / samplerate).map(move |t| (t.sin() + rng_factor_a*(rng_a.gen::<f32>()*2.0-1.0)) * 0.1).collect();
+
 		for z in 0..10
 		{
 			// if z % 50 == 0 { println!("{}", z); }
-
-			let samplerate = 16000.0;
-
-			let mut rng_a = thread_rng();
+			
 			let mut rng_b = thread_rng();
 			let mut rng_c = thread_rng();
 
-			let rng_factor_a = 0.0;
 			let rng_factor_b = rng_b.gen::<f32>();
 			let rng_factor_c = rng_c.gen::<f32>();
 
-			let wave_a: Vec<f32> = (0u64..samplerate as u64).map(move |t| t as f32 * 440.0 * 2.0*f32::consts::PI / samplerate).map(move |t| (t.sin() + rng_factor_a*(rng_a.gen::<f32>()*2.0-1.0)) * 0.1).collect();
 			let wave_b: Vec<f32> = (0u64..samplerate as u64).map(move |t| t as f32 * 440.0 * 2.0*f32::consts::PI / samplerate).map(move |t| (t.sin() + rng_factor_b*(rng_b.gen::<f32>()*2.0-1.0)) * 0.1).collect();
 			let wave_c: Vec<f32> = (0u64..samplerate as u64).map(move |t| t as f32 * 440.0 * 2.0*f32::consts::PI / samplerate).map(move |t| (t.sin() + rng_factor_c*(rng_c.gen::<f32>()*2.0-1.0)) * 0.1).collect();
 
-			let dist_ab = distance_between(
-				&wave_a, 
+			let mfcc_a = framed_mfcc(&wave_a, samplerate);
+			let dist_ab = distance_to_framed_mfcc(
 				&wave_b,
+				&mfcc_a,
 				samplerate);
-			let dist_ac = distance_between(
-				&wave_a, 
+			let dist_ac = distance_to_framed_mfcc(
 				&wave_c,
+				&mfcc_a,
 				samplerate);
 			let dist_bc = distance_between(
 				&wave_b, 
