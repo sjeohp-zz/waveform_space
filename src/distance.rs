@@ -13,23 +13,6 @@ const UPPER_FREQ: 		f32 = 8000.0;
 const FRAME_DURATION: 	f32 = 0.025;
 const STEP_DURATION: 	f32 = 0.01;
 
-pub fn distance_between(samples_a: &[f32], samples_b: &[f32], samplerate: f32) -> f32
-{
-	let frames_a = frames(samples_a, samplerate);
-	let frames_b = frames(samples_b, samplerate);
-	let mut sum = 0f32;
-	for i in 0..frames_a.len()
-	{
-		let mfcc_a = mfcc(&frames_a[i], samplerate);
-		let mfcc_b = mfcc(&frames_b[i], samplerate);
-		for j in 0..mfcc_a.len()
-		{
-			sum += (mfcc_a[j] - mfcc_b[j]).powi(2);
-		}
-	}
-	sum
-}
-
 fn frames(samples: &[f32], samplerate: f32) -> Vec<Vec<f32>>
 {
 	let nsamples_frame = (FRAME_DURATION*samplerate) as usize;
